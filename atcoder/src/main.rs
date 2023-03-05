@@ -1,7 +1,6 @@
 use proconio::input;
 
 struct Context {
-    n: i32,
     l: i32,
     k: i32,
     a: Vec<i32>,
@@ -30,12 +29,21 @@ fn main() {
     }
     assert!(1 <= k && k <= n && n <= 100000);
 
-    let context = Context { n, l, k, a };
-    for score in 1..l {
-        if !context.is_score_feasible(score) {
-            println!("{}", score - 1);
-            return;
+    let context = Context { l, k, a };
+
+    let mut min = 1;
+    let mut max = l;
+
+    while max - min > 1 {
+        let mid = min + (max - min) / 2;
+        if context.is_score_feasible(mid) {
+            min = mid;
+        } else {
+            max = mid;
         }
     }
-    // println!("{}", context.is_score_feasible(2));
+    assert!(min + 1 == max);
+
+    let max_score = min;
+    println!("{}", max_score);
 }
